@@ -1,18 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
   const handleSignup = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/signup", {
+    const response = await fetch("https://authentication-h5lw.onrender.com/api/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
     });
+    navigate("/signupauth"); 
     const data = await response.json();
     alert(data.message);
   };
