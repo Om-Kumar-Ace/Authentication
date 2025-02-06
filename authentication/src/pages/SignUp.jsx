@@ -9,14 +9,25 @@ const Signup = () => {
   const navigate = useNavigate();
   const handleSignup = async (e) => {
     e.preventDefault();
-    const response = await fetch("https://authentication-h5lw.onrender.com/api/signup", {
+
+    const response = await fetch("https://authentication-h5lw.onrender.com/api/auth/signup", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password, name })  // Ensure email, password, and name variables are defined and contain valid data
     });
-    navigate("/signupauth"); 
+    
     const data = await response.json();
-    alert(data.message);
+
+    if (response.ok) {
+      localStorage.setItem("user", JSON.stringify(data.user));  // Store user details
+      alert("Signup Successful");
+      navigate("/menu");
+    } else {
+      alert(data.message);
+    }
+  
   };
 
   return (

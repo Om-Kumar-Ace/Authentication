@@ -1,29 +1,45 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    const response = await fetch("https://authentication-h5lw.onrender.com/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    navigate("/login"); 
-    const data = await response.json();
-    alert(data.message);
+    try {
+      const response = await fetch("https://authentication-h5lw.onrender.com/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })  
+      });
+      
+      
+
+      if (response.ok) {
+        localStorage.setItem("authToken", data.token); // Store token in local storage
+        alert(data.message);
+        navigate("/menu");
+      } else {
+        alert(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Something went wrong. Please try again later.");
+    }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="bg-white p-10 rounded-2xl border w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center text-gray-900">Login</h2>
-        <br></br>
-        <br></br>
-        <p className="text-center font-semibold text-black text-xl mt-2">Welcome back to <span className="font-semibold text-black">ECOMMERCE</span></p>
+        <p className="text-center font-semibold text-black text-xl mt-2">
+          Welcome back to <span className="font-semibold text-black">ECOMMERCE</span>
+        </p>
         <p className="text-center text-gray-800 mb-6 text-sm">The next-gen business marketplace</p>
 
         <form onSubmit={handleLogin} className="space-y-5">
@@ -57,14 +73,13 @@ const Login = () => {
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
-          <a href="/menu">
+
           <button
             type="submit"
             className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
-            >
+          >
             LOGIN
           </button>
-            </a>
         </form>
 
         <div className="mt-6 border-t pt-4">

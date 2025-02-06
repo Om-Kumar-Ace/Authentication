@@ -19,8 +19,7 @@ const SignUpAuth = () => {
     e.preventDefault();
     const otpCode = otp.join(""); 
     try {
-      const res = await axios.post("https://authentication-h5lw.onrender.com/api/verify-email", { otp: otpCode });
-      setMessage(res.data.message);
+      const response = await fetch("https://authentication-h5lw.onrender.com/api/auth/signupauth", { otp: otpCode });
       navigate("/login"); 
     } catch (err) {
       setMessage(err.response?.data?.message || "Error verifying OTP");
