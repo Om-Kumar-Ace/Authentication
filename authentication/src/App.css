@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+.justify-end{
+
+    justify-content: flex-end;
+}
